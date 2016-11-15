@@ -1,4 +1,4 @@
-package com.hackflorida.sdk.model;
+package com.hackflorida.api.model;
 
 /**
  * Created by andrew on 11/14/16.

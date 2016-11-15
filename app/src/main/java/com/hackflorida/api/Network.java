@@ -1,4 +1,4 @@
-package com.hackflorida.sdk;
+package com.hackflorida.api;
 
 /**
  * Created by andrew on 11/14/16.

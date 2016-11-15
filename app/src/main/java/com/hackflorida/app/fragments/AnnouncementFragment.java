@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import com.hackflorida.sdk.API;
-import com.hackflorida.sdk.model.AnnouncementModel;
+import com.hackflorida.api.API;
+import com.hackflorida.api.model.AnnouncementModel;
 
 import java.util.List;
 

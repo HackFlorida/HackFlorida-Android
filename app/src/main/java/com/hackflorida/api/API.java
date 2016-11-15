@@ -1,7 +1,7 @@
-package com.hackflorida.sdk;
+package com.hackflorida.api;
 
-import com.hackflorida.sdk.model.AnnouncementModel;
-import com.hackflorida.sdk.model.BaseModel;
+import com.hackflorida.api.model.AnnouncementModel;
+import com.hackflorida.api.model.BaseModel;
 
 import java.util.List;
 
@@ -17,5 +17,6 @@ public class API {
     public interface APICallback<T extends BaseModel> {
         void onDataReady(List<T> dataSet);
     }
+
 
 }
