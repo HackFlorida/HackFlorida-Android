@@ -1,18 +1,38 @@
 package com.hackflorida.app.activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.hackflorida.api.API;
 import com.hackflorida.app.R;
+import com.hackflorida.app.fragments.AnnouncementFragment;
+import com.hackflorida.app.fragments.MapsFragment;
+import com.hackflorida.app.fragments.RecyclerFragment;
+import com.hackflorida.app.fragments.ScheduleFragment;
+import com.hackflorida.app.fragments.SponsorsFragment;
 
+/**
+ *
+ */
 public class MainActivity extends AppCompatActivity {
 
     AHBottomNavigation mBottomNavigation;
+    RecyclerFragment mActiveFragment;
+
+
+    DrawerLayout mDrawerLayout;
+    AppBarLayout mAppBarLayout;
+    CollapsingToolbarLayout mCollapsingToolbar;
+    Toolbar mToolbar;
 
 
     @Override
@@ -20,24 +40,71 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        configureBottomNavigation();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+        mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsingtoolbar_layout);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        final Button button = (Button) findViewById(R.id.test_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        // Configure text ui
+        final Typeface tf = Typeface.createFromAsset(getAssets(), "last-paradise.ttf");
+        mCollapsingToolbar.setCollapsedTitleTypeface(tf);
+        mCollapsingToolbar.setExpandedTitleTypeface(tf);
+
+        //
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                API api = new API();
-                api.getTest(new API.TestCallback() {
-                    @Override
-                    public void onDataReady(String dummy) {
-                        button.setText(dummy);
-                    }
-                });
+                mDrawerLayout.openDrawer(GravityCompat.START, true);
             }
         });
+
+
+
+        configureBottomNavigation();
+
+
+        mBottomNavigation.setCurrentItem(0);
+        changeActiveFragment(0);
+
+
+    }
+
+    /**
+     * @param position
+     */
+    private void changeActiveFragment(int position) {
+
+        RecyclerFragment newFragment = null;
+        switch (position) {
+            case 0:
+                newFragment = new AnnouncementFragment();
+                break;
+            case 1:
+                newFragment = new ScheduleFragment();
+                break;
+            case 2:
+                newFragment = new MapsFragment();
+                break;
+            case 3:
+                newFragment = new SponsorsFragment();
+        }
+
+        if (newFragment == null) return;
+
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.content_anchor, newFragment)
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .commit();
+
+        mActiveFragment = newFragment;
+
     }
 
 
+    /**
+     *
+     */
     private void configureBottomNavigation() {
 
         mBottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
@@ -66,17 +133,23 @@ public class MainActivity extends AppCompatActivity {
         // Use colored navigation with circle reveal effect
         mBottomNavigation.setColored(true);
 
-        // Set current item programmatically
-        mBottomNavigation.setCurrentItem(1);
-
         // Set listeners
-        mBottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
-            @Override
-            public boolean onTabSelected(int position, boolean wasSelected) {
-                // Do something cool here...
-                return true;
+        mBottomNavigation.setOnTabSelectedListener(new BottomNavigationListener());
+    }
+
+    /**
+     *
+     */
+    private class BottomNavigationListener implements AHBottomNavigation.OnTabSelectedListener {
+
+        @Override
+        public boolean onTabSelected(int position, boolean wasSelected) {
+            if (!wasSelected) changeActiveFragment(position);
+            else {
+                if (mActiveFragment != null) mActiveFragment.performQuickReturn(true);
             }
-        });
+            return true;
+        }
 
     }
 }
