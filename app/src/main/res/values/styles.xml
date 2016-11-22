@@ -3,8 +3,8 @@
     <!-- Theme Styles -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/hf_pink</item>
 
         <!--<item name="android:windowBackground">@color/colorBackground</item>-->
@@ -22,16 +22,11 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-
-        <item name="android:windowTranslucentNavigation">true</item>
-        <!--<item name="android:fitsSystemWindows">true</item>-->
-
-    </style>
-
-    <style name="AppTheme.DrawerTheme" parent="AppTheme.Base">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
+        <item name="colorPrimaryDark">@color/md_grey_400</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light"/>
