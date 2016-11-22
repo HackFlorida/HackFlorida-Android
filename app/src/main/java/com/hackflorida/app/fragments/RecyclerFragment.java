@@ -24,4 +24,8 @@ public abstract class RecyclerFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_recycler, container, false);
     }
+
+    public boolean performQuickReturn(boolean animate) {
+        return true;
+    }
 }
