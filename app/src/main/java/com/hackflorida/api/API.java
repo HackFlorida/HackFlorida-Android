@@ -13,7 +13,8 @@ public class API {
     NetworkClient networkClient = new NetworkClient();
 
     public void getTest(final TestCallback callback) {
-        networkClient.get("testurl", new NetworkClient.NetworkCallback() {
+        // url points to Juan's digital ocean server, so long as it's up
+        networkClient.get("http://162.243.15.139:5000/hackjson", new NetworkClient.NetworkCallback() {
             @Override
             public void onComplete(String json) {
                 callback.onDataReady(json);
