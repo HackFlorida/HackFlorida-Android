@@ -153,12 +153,58 @@ public class API {
             });
     }
 
+
     public void getSchedule() {
 
     }
 
-    public void getSponsors() {
+    public void getSponsors(final APICallback<SponsorModel> callback) {
+        networkClient.get("http://hackflorida.herokuapp.com/api/sponsors",
+                new NetworkClient.NetworkCallback() {
+                    @Override
+                    public void onComplete(String json) {
 
+                    /*
+                    JSON Example:
+                    [
+                        {
+                            "name":"SponsorName",
+                            "imgURL":"Image.Url",
+                            "order":"0"}
+                    ]
+                     */
+                        JSONArray sponsorJSON;
+                        List<SponsorModel> sponsor = new ArrayList();
+
+                        //In case of no JSON (aka check the server if this runs)
+                        try {
+                            sponsorJSON = new JSONArray(json);
+
+                            // Ensuring we have the right JSON
+                            for (int i = 0; i < sponsorJSON.length(); i++) {
+                                JSONObject temp = sponsorJSON.optJSONObject(i);
+                                if (temp != null) {
+                                    // Pull data from JSON into SponsorModel to add to list
+                                    SponsorModel tempSponsor = new SponsorModel(
+                                                                temp.getString("name"),
+                                                                temp.getString("imgURL"),
+                                                                temp.getInt("order")
+                                                                );
+                                    sponsor.add(tempSponsor);
+                                }
+                            }
+
+                            callback.onDataReady(sponsor);
+                        } catch (JSONException e) {
+                            // handle the exception - send error back to the server?
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                });
     }
 
     public interface APICallback<T extends BaseModel> {
